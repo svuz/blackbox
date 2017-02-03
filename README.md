@@ -35,6 +35,6 @@
 
 ##### INSTALL :
 ```bash
-git clone https://github.com/darkeyepy/blackbox.git && cd blackbox \
+git clone git@gitlab.com:BL4CKS3C/blackbox.git && cd blackbox \
       && chmod +x install && sudo ./install && cd
 ```
