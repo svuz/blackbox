@@ -101,8 +101,12 @@ useragent = UserAgent()
 class HTTP_HEADER:
     HOST = "Host"
     SERVER = "Server"
-
-
+def OK(i):
+	try:
+		l=requests.get(i)
+		return 1
+	except Exception as e:
+		return str(e)
 class scanner:
 	burl,gurl = [],[]
 	def headers_reader(self,url):
@@ -130,17 +134,19 @@ class scanner:
 			l=re.sub(i, '', url)
 			vuln = 0
 			for payload in payloads:
-				payload=payload.strip()
-				print (color.G+color.BOLD+"\t{+} "+color.W+" Payload : "+payload+color.ENDC)
-				lfii = l+payload
-				r = requests.get(lfii,verify=False)
-				html = r.content
-				if "root" in html:
-					print (color.R+color.BOLD+"\t{+} "+color.R+" LFI FOUND : "+lfii+color.ENDC)
-					vuln+=1
-				else:
-					print (color.B+color.BOLD+"\t{+} "+color.B+" NOT FOUND : "+lfii+color.ENDC)
-					pass
+					payload=payload.strip()
+					print (color.G+color.BOLD+"\t{+} "+color.W+" Payload : "+payload+color.ENDC)
+					lfii = l+payload
+					test=ok(lfii)
+					if test!=1:
+						r = requests.get(lfii,verify=False)
+						html = r.content
+						if "root" in html:
+							print (color.R+color.BOLD+"\t{+} "+color.R+" LFI FOUND : "+lfii+color.ENDC)
+							vuln+=1
+						else:
+							print (color.B+color.BOLD+"\t{+} "+color.B+" NOT FOUND : "+lfii+color.ENDC)
+							pass
 			print color.W+"[!] %i LFI FOUNDED " % (vuln) +color.ENDC
 	def run(self,url, payloads, check):
 		opener = requests.get(url, verify=False)
